@@ -1,9 +1,8 @@
 [package]
 name = "lcov_badge_generator"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Romain Reignier <rom.reignier@gmail.com>"]
 edition = "2018"
-license = "MIT"
 license-file = "LICENSE"
 readme = "README.md"
 description = "CI Badge generator for LCOV reports"
