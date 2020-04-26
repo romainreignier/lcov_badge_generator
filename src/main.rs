@@ -24,6 +24,13 @@ fn main() {
                 .default_value("badge.svg")
                 .takes_value(true),
         )
+        .arg(
+            Arg::with_name("print")
+                .short("p")
+                .long("print")
+                .help("Only print coverage percentage to stdin")
+                .conflicts_with("output"),
+        )
         .get_matches();
     // Read the HTML file
     let mut file = File::open(matches.value_of("html_file").unwrap()).expect("file not found");
@@ -35,17 +42,22 @@ fn main() {
     let selector = Selector::parse("body > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(3) > td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(7)").unwrap();
     let lines_coverage_element = document.select(&selector).next().unwrap();
     let lines_coverage = lines_coverage_element.inner_html();
-    // Generate the badge
-    let badge = Badge::new(BadgeOptions {
-        subject: "coverage".to_owned(),
-        status: lines_coverage,
-        color: "#4c1".to_owned(),
-    })
-    .unwrap();
-    // Write the svg file
-    let mut badge_file =
-        File::create(matches.value_of("output").unwrap()).expect("Failed to create badege file");
-    badge_file
-        .write_all(badge.to_svg().as_bytes())
-        .expect("Failed to write badgesvg file");
+
+    if matches.is_present("print") {
+        print!("{}", lines_coverage);
+    } else {
+        // Generate the badge
+        let badge = Badge::new(BadgeOptions {
+            subject: "coverage".to_owned(),
+            status: lines_coverage,
+            color: "#4c1".to_owned(),
+        })
+        .unwrap();
+        // Write the svg file
+        let mut badge_file = File::create(matches.value_of("output").unwrap())
+            .expect("Failed to create badege file");
+        badge_file
+            .write_all(badge.to_svg().as_bytes())
+            .expect("Failed to write badgesvg file");
+    }
 }
