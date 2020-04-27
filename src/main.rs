@@ -28,7 +28,7 @@ fn main() {
             Arg::with_name("print")
                 .short("p")
                 .long("print")
-                .help("Only print coverage percentage to stdin")
+                .help("Only print coverage percentage to stdout")
                 .conflicts_with("output"),
         )
         .get_matches();

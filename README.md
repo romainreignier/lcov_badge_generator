@@ -18,7 +18,7 @@ USAGE:
 
 FLAGS:
     -h, --help       Prints help information
-    -p, --print      Only print coverage percentage to stdin
+    -p, --print      Only print coverage percentage to stdout
     -V, --version    Prints version information
 
 OPTIONS:
